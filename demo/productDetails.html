@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<style type="text/css">
+	img{width: 94vw;margin: 0 auto;}
+	#productDetails{font-size:2rem;}
+</style>
+</head>
+<body>
+	<div id="productDetails">
+		
+	</div>
+</body>
+<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	var id=location.href.split('=')[1]
+	console.log(id)
+	$.ajax({
+		type:"get",
+		url:"http://datainfo.duapp.com/shopdata/getGoods.php",
+		async:true,
+		data:{goodsID:id},
+		dataType:'jsonp',
+		success:function(data){
+			console.log(data)
+			var img=JSON.parse(data[0].goodsBenUrl)
+			var str=''
+			img.map(function(item){
+				str+="<div><img src='"+item+"'/></div>"
+			})
+			str+="<div>"+data[0].detail+"</div>"
+			$("#productDetails").html(str)
+		}
+	});
+</script>
+</html>

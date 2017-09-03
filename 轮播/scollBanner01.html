@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,ul,li{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			img{
+				display: block;
+				border: none;
+			}
+			#banner{
+				position: relative;
+				width: 1000px;
+				height: 300px;
+				overflow: hidden;
+			}
+			#banner img{
+				width: 1000px;
+				height: 300px;
+			}
+			#list{
+				position: absolute;
+				width: 3000px;
+			}
+			#list li{
+				float: left;
+			}
+			/*万能清除浮动*/
+			.clearfix:after{
+				display: block;
+				content: "";
+				clear: both;
+			}
+			#navList{
+				position: absolute;
+				right: 50px;
+				bottom: 20px;
+			}
+			#navList li{
+				float: left;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				margin: 0 10px;
+				text-align: center;
+				line-height: 20px;
+				background: white;
+				color: red;
+				cursor: pointer;
+			}
+			#navList li.active{
+				background: red;
+				color: white;
+			}
+			#btn span{
+				position: absolute;
+				top: 100px;
+				width: 50px;
+				height: 100px;
+				background: black;
+				opacity: .5;
+				font-size: 40px;
+				text-align: center;
+				line-height: 100px;
+				color: white;
+				cursor: pointer;
+			}
+			#btn .prev{
+				right: 20px;
+			}
+			#btn .next{
+				left:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--轮播图结构开始-->
+		<div id="banner">
+			<ul class="clearfix" id="list">
+				<li><a href=""><img src="img/1.jpg"></a></li>
+				<li><a href=""><img src="img/2.jpg"></a></li>
+				<li><a href=""><img src="img/3.jpg"></a></li>
+			</ul>
+			<ul id="navList" class="clearfix">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+			<div id="btn">
+				<span class="prev">></span>
+				<span class="next"><</span>
+			</div>
+		</div>
+		<script src="startMove.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var oBanner = document.getElementById("banner");
+			var oUl = oBanner.getElementsByTagName("ul")[0];
+			var aLi = oUl.getElementsByTagName("li");
+			var oNavUl = oBanner.getElementsByTagName("ul")[1];
+			var aNavLi = oNavUl.getElementsByTagName("li");
+			var oPrev = oBanner.getElementsByClassName("prev")[0];
+			var oNext = oBanner.getElementsByClassName("next")[0];
+			var cloneLi = aLi[0].cloneNode(true);
+			oUl.appendChild(cloneLi);
+			oUl.style.width = aLi.length * aLi[0].offsetWidth + "px";
+			var i = 0;
+			var m = 0;
+			var timer = setInterval(move,3000);
+			function move(){
+//				clearInterval(timer);
+				if(i>=aLi.length-1){
+					oUl.style.left = 0;
+					i = 0;
+				}
+				for(var j = 0; j < aNavLi.length; j++){
+					aNavLi[j].className = "";
+				}
+				i++;
+				m++;
+				if(m>=aNavLi.length){
+					m = 0;
+				}
+				aNavLi[m].className = "active";
+				startMove(oUl,{"left":-1000*i});
+				
+			}
+			
+			for(var j = 0; j < aNavLi.length; j++){
+				aNavLi[j].index = j;
+				aNavLi[j].onmouseover = function(){
+					clearInterval(timer);
+					i = this.index-1;
+					m = this.index-1;
+					move();
+					
+				}
+				aNavLi[j].onmouseout = function(){
+					timer = setInterval(move,3000);
+				}
+			}
+			
+			oNext.onclick = function(){
+				clearInterval(timer);
+				move();
+			}
+			oPrev.onclick = function(){
+				clearInterval(timer);
+				if(i<=0){
+					oUl.style.left = -(aLi.length-1)*1000 + "px";
+					i = aLi.length - 3; 
+				}else{
+					i = i -2;
+				}
+				
+				move();
+			}
+			
+		</script>
+	</body>
+</html>

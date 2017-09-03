@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,ul,li{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			img{
+				display: block;
+				border: none;
+			}
+			#banner{
+				position: relative;
+				width: 1000px;
+				height: 300px;
+				overflow: hidden;
+			}
+			#banner img{
+				width: 1000px;
+				height: 300px;
+			}
+			#banner ul{
+				position: absolute;
+				/*width: 3000px;*/
+			}
+			#banner li{
+				/*float: left;*/
+			}
+			/*万能清除浮动*/
+			.clearfix:after{
+				display: block;
+				content: "";
+				clear: both;
+			}
+		</style>
+	</head>
+	<body>
+		<!--轮播图结构开始-->
+		<div id="banner">
+			<ul class="clearfix">
+				<li><a href=""><img src="img/1.jpg"></a></li>
+				<li><a href=""><img src="img/2.jpg"></a></li>
+				<li><a href=""><img src="img/3.jpg"></a></li>
+			</ul>
+		</div>
+		<script src="startMove.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var oBanner = document.getElementById("banner");
+			var oUl = oBanner.getElementsByTagName("ul")[0];
+			var i = 0;
+			var timer = setInterval(function(){
+				i++;
+				startMove(oUl,{"top":-300*i});
+				if(i>=2){
+					i=-1;
+				}
+			},3000);
+			
+			
+		</script>
+	</body>
+</html>
